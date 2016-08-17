@@ -1,0 +1,43 @@
+set-location C:\PS\health\SQL_Server
+
+$isodate=Get-Date -format s 
+$isodate=$isodate -replace(":","")
+$basepath=(Get-Location -PSProvider FileSystem).ProviderPath
+
+
+$instancepath=$basepath + "\config\instances.txt"
+
+
+
+$filePath = ""
+
+$dt = new-object "System.Data.DataTable"
+foreach ($instance in get-content $instancepath)
+{
+$instance
+$outputfile="\logs\sql_server_db_sizes_" +$instance+"_"+ $isodate + ".html"
+$outputfilefull = $basepath + $outputfile
+$cn = new-object System.Data.SqlClient.SqlConnection "server=$instance;database=msdb;Integrated Security=sspi"
+$cn.Open()
+$sql = $cn.CreateCommand()
+$sql.CommandText = "
+select @@servername as ServerName,
+DB_NAME(mf.database_id) as [db_name],
+type_desc,
+str(convert(dec(14,2),size) / 128,14,2) as DATABASE_SIZE_MB,
+str(convert(dec(14,2),size) / 128,14,2)/convert(dec(8,2),1024.00) as DATABASE_SIZE_GB
+from sys.master_files as mf
+INNER JOIN sys.databases as da ON da.database_id = mf.database_id
+"
+    $rdr = $sql.ExecuteReader()
+    $dt.Load($rdr)
+    $cn.Close()
+   
+$dt | select * -ExcludeProperty RowError, RowState, HasErrors, Name, Table, ItemArray | Where-Object {($_.ServerName -eq $instance )}| ConvertTo-Html -head $reportstyle -body "SQL Server Database Sizes" | Set-Content $outputfilefull  
+
+$filepath = $outputfilefull 
+
+
+}
+
+ 

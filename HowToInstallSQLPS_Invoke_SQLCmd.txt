@@ -1,0 +1,15 @@
+
+http://blog.smu.edu/wis/2012/11/26/sql-server-powershell-module-sqlps/
+
+Microsoft® System CLR Types for Microsoft® SQL Server® 2012 (SQLSysClrTypes.msi)
+Microsoft® SQL Server® 2012 Shared Management Objects (SharedManagementObjects.msi)
+Microsoft® Windows PowerShell Extensions for Microsoft® SQL Server® 2012 (PowerShellTools.msi)
+
+
+http://www.microsoft.com/en-us/download/details.aspx?id=29065
+
+Install the following packages in this order:
+
+Microsoft® System CLR Types for Microsoft® SQL Server® 2012 (SQLSysClrTypes.msi)
+Microsoft® SQL Server® 2012 Shared Management Objects (SharedManagementObjects.msi)
+Microsoft® Windows PowerShell Extensions for Microsoft® SQL Server® 2012 (PowerShellTools.msi)
